@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Buscador de Productos</h2>
+    <input type="text" id="codigo" placeholder="Ej. P001">
+    <button onclick="buscar()">Buscar</button>
+    <div id="resultado"></div>
+    <br>
+    <a href="principal.html"><button>Regresar</button></a>
+
+    <script>
+        const BACKEND_URL = "https://ejercicio1backendparcialprograii.onrender.com";
+
+        async function buscar() {
+            const codigo = document.getElementById('codigo').value;
+            const res = await fetch(`${BACKEND_URL}/api/buscar_producto`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ codigo: codigo })
+            });
+
+            const data = await res.json();
+            if(data.error) {
+                document.getElementById('resultado').innerText = data.error;
+            } else {
+                document.getElementById('resultado').innerText = `Nombre: ${data.nombre} | Stock: ${data.stock}`;
+            }
+        }
+    </script>
+</body>
+</html>
